@@ -20,7 +20,7 @@ public @interface MyLogRecord {
     /**
      * 日志类型
      */
-    OperationLogTypeEnum type() default OperationLogTypeEnum.NO_OP;
+    OperationLogTypeEnum type();
 
     /**
      * 关联主键id

@@ -41,24 +41,33 @@ public class LogRecordFactory {
         operationLogDTO.setType(type.getType());
         //relationId
         DynamicTemplatesContext relationIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.RELATION_ID);
+        String relationIdResult;
         if (relationIdDT != null) {
-            String result = relationIdDT.getResult();
-            operationLogDTO.setRelationId(Long.valueOf(result));
+            relationIdResult = relationIdDT.getResult();
+        } else {
+            relationIdResult = annotation.relationId();
         }
+        operationLogDTO.setRelationId(Long.valueOf(relationIdResult));
         //operatorId
         DynamicTemplatesContext operatorIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.OPERATOR_ID);
+        String operatorIdResult;
         if (operatorIdDT != null) {
-            String result = operatorIdDT.getResult();
-            operationLogDTO.setOperatorId(Long.valueOf(result));
+            operatorIdResult = operatorIdDT.getResult();
+        } else {
+            operatorIdResult = annotation.operatorId();
         }
+        operationLogDTO.setOperatorId(Long.valueOf(operatorIdResult));
         //operateTime
         operationLogDTO.setOperateTime(new Date());
         //description
         DynamicTemplatesContext descriptionDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.DESCRIPTION);
+        String descriptionResult;
         if (descriptionDT != null) {
-            String result = descriptionDT.getResult();
-            operationLogDTO.setDescription(result);
+            descriptionResult = descriptionDT.getResult();
+        } else {
+            descriptionResult = annotation.description();
         }
+        operationLogDTO.setDescription(descriptionResult);
 
         return operationLogDTO;
     }

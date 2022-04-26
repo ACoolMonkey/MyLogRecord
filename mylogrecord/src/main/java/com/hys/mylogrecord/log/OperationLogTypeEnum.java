@@ -6,9 +6,9 @@ import lombok.Getter;
 public enum OperationLogTypeEnum {
 
     /**
-     * 空操作
+     * 添加商品
      */
-    NO_OP(0, "");
+    INSERT_PRODUCT(1, "添加商品");
 
     private final Integer type;
     private final String name;
