@@ -9,6 +9,7 @@ import com.hys.mylogrecord.persistence.service.LogRecordService;
 import com.hys.mylogrecord.util.LogRecordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,6 +21,7 @@ import java.util.Date;
  * @since 2022年04月24日 10:36
  **/
 @Component
+@Async
 public class LogRecordFactory {
 
     @Autowired
