@@ -31,4 +31,32 @@ public class MyLogRecordTest {
     public void dynamicTemplateTest(Long spuId, Long operatorId, ProductContentDTO productContentDTO) {
         log.info("执行业务操作...");
     }
+
+    @MyLogRecord(
+            type = OperationLogTypeEnum.INSERT_PRODUCT,
+            relationId = "{#spuId}",
+            operatorId = "{#operatorId}",
+            description = "添加商品 {product_insertProduct_desc{#productContentDTO.content}}")
+    public void customFunctionTest(Long spuId, Long operatorId, ProductContentDTO productContentDTO) {
+        log.info("执行业务操作...");
+    }
+
+    @MyLogRecord(
+            type = OperationLogTypeEnum.UPDATE_PRODUCT,
+            relationId = "{#spuId}",
+            operatorId = "{#operatorId}",
+            description = "修改商品 修改前：“{product_updateProduct_desc_executeBefore{#productContentDTO.content}}”，修改后：“{product_updateProduct_desc_executeAfter{#productContentDTO.content}}”")
+    public void anotherCustomFunctionTest(Long spuId, Long operatorId, ProductContentDTO productContentDTO) {
+        log.info("执行业务操作...");
+    }
+
+    @MyLogRecord(
+            type = OperationLogTypeEnum.UPDATE_PRODUCT,
+            relationId = "{#spuId}",
+            operatorId = "{#operatorId}",
+            description = "{product_updateProduct_desc_snapshot{#productContentDTO}}",
+            snapshot = "{product_updateProduct_snapshot{#spuId}}")
+    public void snapshotTest(Long spuId, Long operatorId, ProductContentDTO productContentDTO) {
+        log.info("执行业务操作...");
+    }
 }

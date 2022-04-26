@@ -21,5 +21,5 @@ public interface MyLogRecordSnapshotFunction {
      * 自定义函数
      * 注：本方法的返回值会被存进缓存中，通过{@link LogRecordUtils#getSnapshotCache()}方法拿到缓存值
      */
-    Object apply(Object value);
+    Object snapshotApply(Object value);
 }

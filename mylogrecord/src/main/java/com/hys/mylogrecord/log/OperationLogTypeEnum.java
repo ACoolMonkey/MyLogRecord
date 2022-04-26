@@ -8,7 +8,11 @@ public enum OperationLogTypeEnum {
     /**
      * 添加商品
      */
-    INSERT_PRODUCT(1, "添加商品");
+    INSERT_PRODUCT(1, "添加商品"),
+    /**
+     * 修改商品
+     */
+    UPDATE_PRODUCT(2, "修改商品");
 
     private final Integer type;
     private final String name;

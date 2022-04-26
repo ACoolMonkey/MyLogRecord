@@ -303,6 +303,6 @@ public class LogRecordParseUtils {
         String parameter = matcher.group(2);
         Object parameterResult = getSpelTemplateResult(parameter, paramNamesValues);
         //回调自定义函数
-        return myLogRecordSnapshotFunction.apply(parameterResult);
+        return myLogRecordSnapshotFunction.snapshotApply(parameterResult);
     }
 }

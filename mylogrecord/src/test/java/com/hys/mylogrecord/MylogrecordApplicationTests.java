@@ -16,6 +16,6 @@ class MylogrecordApplicationTests {
     void contextLoads() {
         ProductContentDTO productContentDTO = new ProductContentDTO();
         productContentDTO.setContent("商品参数");
-        myLogRecordTest.dynamicTemplateTest(123L, 456L, productContentDTO);
+        myLogRecordTest.snapshotTest(123L, 456L, productContentDTO);
     }
 }
