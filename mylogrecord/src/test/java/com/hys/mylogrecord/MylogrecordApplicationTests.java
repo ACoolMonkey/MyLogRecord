@@ -1,6 +1,7 @@
 package com.hys.mylogrecord;
 
 import com.hys.mylogrecord.demo.MyLogRecordTest;
+import com.hys.mylogrecord.demo.dto.ProductContentDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,8 @@ class MylogrecordApplicationTests {
 
     @Test
     void contextLoads() {
-        myLogRecordTest.simpleTest();
+        ProductContentDTO productContentDTO = new ProductContentDTO();
+        productContentDTO.setContent("商品参数");
+        myLogRecordTest.dynamicTemplateTest(123L, 456L, productContentDTO);
     }
 }
