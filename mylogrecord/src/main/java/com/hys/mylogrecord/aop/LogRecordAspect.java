@@ -5,6 +5,7 @@ import com.hys.mylogrecord.aop.annotation.MyLogRecord;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import com.hys.mylogrecord.persistence.LogRecordFactory;
 import com.hys.mylogrecord.util.LogRecordUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,6 +27,7 @@ import java.util.Map;
  **/
 @Aspect
 @Component
+@Slf4j
 public class LogRecordAspect {
 
     @Autowired
@@ -64,7 +66,11 @@ public class LogRecordAspect {
         //自定义函数后执行 & SpEL解析
         LogRecordParseUtils.executeLogRecordFunctions(false, paramNamesValues);
         //持久化
-        logRecordFactory.record(annotation);
+        try {
+            logRecordFactory.record(annotation);
+        } catch (Exception e) {
+            log.error("日志持久化出错！", e);
+        }
         //清除ThreadLocal缓存
         LogRecordParseUtils.remove();
         LogRecordUtils.remove();
