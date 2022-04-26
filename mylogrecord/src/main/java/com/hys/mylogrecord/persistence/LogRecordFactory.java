@@ -30,8 +30,8 @@ public class LogRecordFactory {
      * 保存日志
      */
     public void record(MyLogRecord annotation) {
-        OperationLogDTO log = buildOperationLog(annotation);
-        defaultLogRecordServiceImpl.record(log);
+        OperationLogDTO operationLogDTO = buildOperationLog(annotation);
+        defaultLogRecordServiceImpl.record(operationLogDTO);
     }
 
     private OperationLogDTO buildOperationLog(MyLogRecord annotation) {

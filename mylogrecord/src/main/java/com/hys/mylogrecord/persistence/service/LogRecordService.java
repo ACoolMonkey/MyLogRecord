@@ -13,7 +13,7 @@ public interface LogRecordService {
     /**
      * 保存日志
      *
-     * @param log 日志实体
+     * @param operationLogDTO 日志实体
      */
-    void record(OperationLogDTO log);
+    void record(OperationLogDTO operationLogDTO);
 }
