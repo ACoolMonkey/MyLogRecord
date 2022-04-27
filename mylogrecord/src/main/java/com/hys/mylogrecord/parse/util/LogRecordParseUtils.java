@@ -122,7 +122,8 @@ public class LogRecordParseUtils {
 
             ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
             ObjectInputStream in = new ObjectInputStream(byteIn);
-            @SuppressWarnings("unchecked") T dest = (T) in.readObject();
+            @SuppressWarnings("unchecked")
+            T dest = (T) in.readObject();
             return dest;
         } catch (Exception e) {
             throw new RuntimeException(e);
