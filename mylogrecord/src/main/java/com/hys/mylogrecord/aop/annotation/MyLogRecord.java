@@ -48,6 +48,6 @@ public @interface MyLogRecord {
      * 注：本方法会比预处理的自定义函数还要先执行，同时也就意味着在自定义函数预执行阶段即可拿到缓存值
      */
     @SpelDynamicTemplate
-    @CustomFunction
+    @CustomSnapshotFunction
     String snapshot() default "";
 }
