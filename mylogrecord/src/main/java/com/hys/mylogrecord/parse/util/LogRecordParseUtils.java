@@ -118,7 +118,8 @@ public class LogRecordParseUtils {
     private static DynamicTemplatesContext buildDynamicTemplate(String annotation, String content) {
         BracketsIndexStack bracketsIndexStack = new BracketsIndexStack();
         List<DynamicTemplate> dynamicTemplates = new ArrayList<>(2);
-        for (int i = 0; i < content.length(); i++) {
+        int length = content.length();
+        for (int i = 0; i < length; i++) {
             if (content.charAt(i) == LEFT_BRACKET) {
                 bracketsIndexStack.push(i);
             } else if (content.charAt(i) == RIGHT_BRACKET) {

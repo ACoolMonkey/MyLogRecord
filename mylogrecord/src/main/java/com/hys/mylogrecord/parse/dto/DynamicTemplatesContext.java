@@ -35,7 +35,8 @@ public class DynamicTemplatesContext implements Serializable {
         }
 
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < templates.size(); i++) {
+        int size = templates.size();
+        for (int i = 0; i < size; i++) {
             DynamicTemplate template = templates.get(i);
             Integer startIndex = template.getStartIndex();
             if (i != 0) {
