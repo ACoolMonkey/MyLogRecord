@@ -15,6 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +47,13 @@ public class LogRecordParseUtils {
 
     private static final Pattern FUNCTION_NAME_PATTERN = Pattern.compile("^[\\w$]+$", Pattern.CASE_INSENSITIVE);
     private static final Pattern CUSTOM_FUNCTION_PATTERN = Pattern.compile("^([\\w$]+)?\\{(#([\\w$]+)?(\\..+)?)\\}$", Pattern.CASE_INSENSITIVE);
+
+    public static final String RELATION_ID = "relationId";
+    public static final String OPERATOR_ID = "operatorId";
+    public static final String DESCRIPTION = "description";
+    public static final String SNAPSHOT = "snapshot";
+
+    private static final String WELL_NUMBER = "#";
 
     private LogRecordParseUtils() {
     }
@@ -73,10 +84,10 @@ public class LogRecordParseUtils {
     }
 
     public static void initDynamicTemplatesTL(String methodName) {
-        doInitDynamicTemplatesTL(methodName, LogRecordUtils.RELATION_ID);
-        doInitDynamicTemplatesTL(methodName, LogRecordUtils.OPERATOR_ID);
-        doInitDynamicTemplatesTL(methodName, LogRecordUtils.DESCRIPTION);
-        doInitDynamicTemplatesTL(methodName, LogRecordUtils.SNAPSHOT);
+        doInitDynamicTemplatesTL(methodName, RELATION_ID);
+        doInitDynamicTemplatesTL(methodName, OPERATOR_ID);
+        doInitDynamicTemplatesTL(methodName, DESCRIPTION);
+        doInitDynamicTemplatesTL(methodName, SNAPSHOT);
     }
 
     private static void doInitDynamicTemplatesTL(String methodName, String annotation) {
@@ -91,13 +102,31 @@ public class LogRecordParseUtils {
         if (selected == null) {
             return;
         }
-        DynamicTemplatesContext dynamicTemplatesContextCopy = LogRecordUtils.deepCopy(selected);
+        DynamicTemplatesContext dynamicTemplatesContextCopy = deepCopy(selected);
         Set<DynamicTemplatesContext> dynamicTemplatesContextTL = DYNAMIC_TEMPLATES.get();
         if (dynamicTemplatesContextTL == null) {
             dynamicTemplatesContextTL = Sets.newHashSetWithExpectedSize(1);
         }
         dynamicTemplatesContextTL.add(dynamicTemplatesContextCopy);
         DYNAMIC_TEMPLATES.set(dynamicTemplatesContextTL);
+    }
+
+    /**
+     * 深拷贝
+     */
+    private static <T> T deepCopy(T src) {
+        try {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            out.writeObject(src);
+
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            @SuppressWarnings("unchecked") T dest = (T) in.readObject();
+            return dest;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void initDynamicTemplate(String methodName, String annotation, String content) {
@@ -182,14 +211,14 @@ public class LogRecordParseUtils {
         }
 
         //relationId
-        DynamicTemplatesContext relationIdDT = getDynamicTemplates(LogRecordUtils.RELATION_ID);
-        doExecuteLogRecordFunctions(executeBefore, relationIdDT, LogRecordUtils.RELATION_ID, paramNamesValues);
+        DynamicTemplatesContext relationIdDT = getDynamicTemplates(RELATION_ID);
+        doExecuteLogRecordFunctions(executeBefore, relationIdDT, RELATION_ID, paramNamesValues);
         //operatorId
-        DynamicTemplatesContext operatorIdDT = getDynamicTemplates(LogRecordUtils.OPERATOR_ID);
-        doExecuteLogRecordFunctions(executeBefore, operatorIdDT, LogRecordUtils.OPERATOR_ID, paramNamesValues);
+        DynamicTemplatesContext operatorIdDT = getDynamicTemplates(OPERATOR_ID);
+        doExecuteLogRecordFunctions(executeBefore, operatorIdDT, OPERATOR_ID, paramNamesValues);
         //description
-        DynamicTemplatesContext descriptionDT = getDynamicTemplates(LogRecordUtils.DESCRIPTION);
-        doExecuteLogRecordFunctions(executeBefore, descriptionDT, LogRecordUtils.DESCRIPTION, paramNamesValues);
+        DynamicTemplatesContext descriptionDT = getDynamicTemplates(DESCRIPTION);
+        doExecuteLogRecordFunctions(executeBefore, descriptionDT, DESCRIPTION, paramNamesValues);
     }
 
     public static void executeLogRecordSnapshotFunctions(Map<String, Object> paramNamesValues) {
@@ -197,7 +226,7 @@ public class LogRecordParseUtils {
             return;
         }
 
-        DynamicTemplatesContext snapshotDT = getDynamicTemplates(LogRecordUtils.SNAPSHOT);
+        DynamicTemplatesContext snapshotDT = getDynamicTemplates(SNAPSHOT);
         doExecuteLogRecordSnapshotFunctions(snapshotDT, paramNamesValues);
     }
 
@@ -253,10 +282,10 @@ public class LogRecordParseUtils {
     }
 
     private static Object getTemplateResult(boolean executeBefore, String template, Map<String, Object> paramNamesValues) {
-        if (template.startsWith("#") && executeBefore) {
+        if (template.startsWith(WELL_NUMBER) && executeBefore) {
             //注：executeBefore=true是自定义函数独有的功能，SpEL不具备这个功能
             return null;
-        } else if (template.startsWith("#") && !executeBefore) {
+        } else if (template.startsWith(WELL_NUMBER) && !executeBefore) {
             //如果是“#”开头的参数，直接解析SpEL表达式
             return getSpelTemplateResult(template, paramNamesValues);
         }
@@ -287,7 +316,7 @@ public class LogRecordParseUtils {
     }
 
     private static Object getSnapshotTemplateResult(String template, Map<String, Object> paramNamesValues) {
-        if (template.startsWith("#")) {
+        if (template.startsWith(WELL_NUMBER)) {
             //如果是“#”开头的参数，直接解析SpEL表达式
             return getSpelTemplateResult(template, paramNamesValues);
         }

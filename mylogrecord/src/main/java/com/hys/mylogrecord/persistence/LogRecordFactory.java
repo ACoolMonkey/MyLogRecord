@@ -6,7 +6,6 @@ import com.hys.mylogrecord.log.OperationLogTypeEnum;
 import com.hys.mylogrecord.parse.dto.DynamicTemplatesContext;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import com.hys.mylogrecord.persistence.service.LogRecordService;
-import com.hys.mylogrecord.util.LogRecordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -40,7 +39,7 @@ public class LogRecordFactory {
         OperationLogTypeEnum type = annotation.type();
         operationLogDTO.setType(type.getType());
         //relationId
-        DynamicTemplatesContext relationIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.RELATION_ID);
+        DynamicTemplatesContext relationIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordParseUtils.RELATION_ID);
         String relationIdResult;
         if (relationIdDT != null) {
             relationIdResult = relationIdDT.getResult();
@@ -49,7 +48,7 @@ public class LogRecordFactory {
         }
         operationLogDTO.setRelationId(Long.valueOf(relationIdResult));
         //operatorId
-        DynamicTemplatesContext operatorIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.OPERATOR_ID);
+        DynamicTemplatesContext operatorIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordParseUtils.OPERATOR_ID);
         String operatorIdResult;
         if (operatorIdDT != null) {
             operatorIdResult = operatorIdDT.getResult();
@@ -60,7 +59,7 @@ public class LogRecordFactory {
         //operateTime
         operationLogDTO.setOperateTime(new Date());
         //description
-        DynamicTemplatesContext descriptionDT = LogRecordParseUtils.getDynamicTemplates(LogRecordUtils.DESCRIPTION);
+        DynamicTemplatesContext descriptionDT = LogRecordParseUtils.getDynamicTemplates(LogRecordParseUtils.DESCRIPTION);
         String descriptionResult;
         if (descriptionDT != null) {
             descriptionResult = descriptionDT.getResult();
