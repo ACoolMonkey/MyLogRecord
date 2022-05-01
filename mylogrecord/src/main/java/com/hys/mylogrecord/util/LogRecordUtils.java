@@ -16,7 +16,7 @@ public class LogRecordUtils {
     private LogRecordUtils() {
     }
 
-    public static void setSnapshotCache(Object object) {
+    public static void addSnapshotCache(Object object) {
         List<Object> snapshots = SNAPSHOT_CACHE.get();
         if (snapshots == null) {
             snapshots = new ArrayList<>(1);
