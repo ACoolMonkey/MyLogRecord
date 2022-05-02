@@ -7,7 +7,6 @@ import com.hys.mylogrecord.parse.dto.DynamicTemplatesContext;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import com.hys.mylogrecord.persistence.service.LogRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -22,7 +21,6 @@ import java.util.Date;
 public class LogRecordFactory {
 
     @Autowired
-    @Qualifier("defaultLogRecordServiceImpl")
     private LogRecordService defaultLogRecordServiceImpl;
 
     /**
