@@ -21,14 +21,14 @@ import java.util.Date;
 public class LogRecordFactory {
 
     @Autowired
-    private LogRecordService defaultLogRecordServiceImpl;
+    private LogRecordService logRecordService;
 
     /**
      * 保存日志
      */
     public void record(MyLogRecord annotation) {
         OperationLogDTO operationLogDTO = buildOperationLog(annotation);
-        defaultLogRecordServiceImpl.record(operationLogDTO);
+        logRecordService.record(operationLogDTO);
     }
 
     private OperationLogDTO buildOperationLog(MyLogRecord annotation) {
