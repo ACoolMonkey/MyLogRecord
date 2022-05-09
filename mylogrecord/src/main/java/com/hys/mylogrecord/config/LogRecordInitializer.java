@@ -5,9 +5,8 @@ import com.hys.mylogrecord.customfunction.MyLogRecordFunction;
 import com.hys.mylogrecord.customfunction.MyLogRecordSnapshotFunction;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import org.reflections.Reflections;
-import org.reflections.scanners.Scanners;
+import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,8 +33,7 @@ public class LogRecordInitializer implements InitializingBean {
         //动态模板初始化
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .forPackages("com.hys")
-                .filterInputsBy(new FilterBuilder().includePackage("com.hys"))
-                .setScanners(Scanners.MethodsAnnotated, Scanners.SubTypes));
+                .addScanners(new MethodAnnotationsScanner()));
         Set<Method> methods = reflections.getMethodsAnnotatedWith(MyLogRecord.class);
         for (Method method : methods) {
             MyLogRecord annotation = method.getAnnotation(MyLogRecord.class);
