@@ -274,7 +274,7 @@ public class LogRecordParseUtils {
         for (DynamicTemplate template : templates) {
             String innerTemplate = template.getTemplate();
             Object templateResult = getSnapshotTemplateResult(innerTemplate, paramNamesValues);
-            LogRecordUtils.setSnapshotCache(templateResult);
+            LogRecordUtils.addSnapshotCache(templateResult);
         }
     }
 
