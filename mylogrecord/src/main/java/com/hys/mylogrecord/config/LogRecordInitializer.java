@@ -4,6 +4,8 @@ import com.hys.mylogrecord.aop.annotation.MyLogRecord;
 import com.hys.mylogrecord.customfunction.MyLogRecordFunction;
 import com.hys.mylogrecord.customfunction.MyLogRecordSnapshotFunction;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.util.ConfigurationBuilder;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -23,6 +24,7 @@ import java.util.Set;
  * @since 2022年04月24日 17:12
  **/
 @Component
+@Slf4j
 public class LogRecordInitializer implements InitializingBean {
 
     @Autowired
@@ -35,9 +37,14 @@ public class LogRecordInitializer implements InitializingBean {
                 .forPackages("com.hys")
                 .addScanners(new MethodAnnotationsScanner()));
         Set<Method> methods = reflections.getMethodsAnnotatedWith(MyLogRecord.class);
+        if (CollectionUtils.isNotEmpty(methods)) {
+            log.info("扫描到如下日志记录方法：");
+        }
         for (Method method : methods) {
             MyLogRecord annotation = method.getAnnotation(MyLogRecord.class);
-            buildDynamicTemplate(method.toGenericString(), annotation);
+            String methodName = method.toGenericString();
+            log.info(methodName);
+            buildDynamicTemplate(methodName, annotation);
         }
         //快照初始化
         Set<Class<? extends MyLogRecordSnapshotFunction>> snapshotClasses = reflections.getSubTypesOf(MyLogRecordSnapshotFunction.class);
@@ -67,8 +74,10 @@ public class LogRecordInitializer implements InitializingBean {
             return;
         }
 
+        log.info("扫描到如下快照方法：");
         for (Class<? extends MyLogRecordSnapshotFunction> clazz : classes) {
             MyLogRecordSnapshotFunction bean = applicationContext.getBean(clazz);
+            log.info(bean.toString());
             String functionName = bean.functionName();
             LogRecordParseUtils.validateFunctionName(functionName);
             LogRecordParseUtils.putInitMySnapshotLogRecordFunctions(functionName, bean);
@@ -80,8 +89,10 @@ public class LogRecordInitializer implements InitializingBean {
             return;
         }
 
+        log.info("扫描到如下自定义函数：");
         for (Class<? extends MyLogRecordFunction> clazz : classes) {
             MyLogRecordFunction bean = applicationContext.getBean(clazz);
+            log.info(bean.toString());
             String functionName = bean.functionName();
             LogRecordParseUtils.validateFunctionName(functionName);
             boolean executeBefore = bean.executeBefore();
