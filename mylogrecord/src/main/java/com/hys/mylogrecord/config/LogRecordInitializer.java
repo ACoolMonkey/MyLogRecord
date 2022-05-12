@@ -43,7 +43,7 @@ public class LogRecordInitializer implements InitializingBean {
         for (Method method : methods) {
             MyLogRecord annotation = method.getAnnotation(MyLogRecord.class);
             String methodName = method.toGenericString();
-            log.info(methodName);
+            log.info(LogUtils.methodLogDesensitization(methodName));
             buildDynamicTemplate(methodName, annotation);
         }
         //快照初始化
@@ -77,7 +77,7 @@ public class LogRecordInitializer implements InitializingBean {
         log.info("扫描到如下快照方法：");
         for (Class<? extends MyLogRecordSnapshotFunction> clazz : classes) {
             MyLogRecordSnapshotFunction bean = applicationContext.getBean(clazz);
-            log.info(bean.toString());
+            log.info(LogUtils.beanLogDesensitization(bean.toString()));
             String functionName = bean.functionName();
             LogRecordParseUtils.validateFunctionName(functionName);
             LogRecordParseUtils.putInitMySnapshotLogRecordFunctions(functionName, bean);
@@ -92,7 +92,7 @@ public class LogRecordInitializer implements InitializingBean {
         log.info("扫描到如下自定义函数：");
         for (Class<? extends MyLogRecordFunction> clazz : classes) {
             MyLogRecordFunction bean = applicationContext.getBean(clazz);
-            log.info(bean.toString());
+            log.info(LogUtils.beanLogDesensitization(bean.toString()));
             String functionName = bean.functionName();
             LogRecordParseUtils.validateFunctionName(functionName);
             boolean executeBefore = bean.executeBefore();
