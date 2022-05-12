@@ -55,6 +55,8 @@ public class LogRecordParseUtils {
 
     private static final String WELL_NUMBER = "#";
 
+    private static final SpelExpressionParser SPEL_EXPRESSION_PARSER = new SpelExpressionParser();
+
     private LogRecordParseUtils() {
     }
 
@@ -175,7 +177,6 @@ public class LogRecordParseUtils {
         }
         String functionName = matcher.group(1);
         Object paramValue = paramNamesValues.get(functionName);
-        SpelExpressionParser parser = new SpelExpressionParser();
         String suffix = matcher.group(2);
         String expressionString;
         if (suffix == null) {
@@ -183,7 +184,7 @@ public class LogRecordParseUtils {
         } else {
             expressionString = "#root" + suffix;
         }
-        Expression expression = parser.parseExpression(expressionString);
+        Expression expression = SPEL_EXPRESSION_PARSER.parseExpression(expressionString);
         return expression.getValue(paramValue);
     }
 
