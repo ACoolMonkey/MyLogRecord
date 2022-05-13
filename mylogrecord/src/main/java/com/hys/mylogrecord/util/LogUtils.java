@@ -1,4 +1,4 @@
-package com.hys.mylogrecord.config;
+package com.hys.mylogrecord.util;
 
 import org.apache.commons.lang3.StringUtils;
 
