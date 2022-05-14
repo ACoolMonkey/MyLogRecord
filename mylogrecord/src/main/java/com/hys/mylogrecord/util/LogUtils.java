@@ -47,9 +47,9 @@ public class LogUtils {
 
     private static String doLogDesensitization(String log, int last) {
         String[] splitLog = log.split("\\.");
-        if (last < 0 || last > splitLog.length) {
+        if (last < 0) {
             last = 0;
-        } else if (last == splitLog.length) {
+        } else if (last >= splitLog.length) {
             return log;
         }
         int index = splitLog.length - last;
@@ -64,5 +64,10 @@ public class LogUtils {
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return stringBuilder.toString();
+    }
+
+    public static void main(String[] args) {
+        String s = LogUtils.doLogDesensitization("com.hys.demo.Test", 4);
+        System.out.println(s);
     }
 }
