@@ -65,9 +65,4 @@ public class LogUtils {
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return stringBuilder.toString();
     }
-
-    public static void main(String[] args) {
-        String s = LogUtils.doLogDesensitization("com.hys.demo.Test", 4);
-        System.out.println(s);
-    }
 }
