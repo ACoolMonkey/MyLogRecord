@@ -31,10 +31,10 @@ import java.util.regex.Pattern;
  **/
 public class LogRecordParseUtils {
 
-    private static final char LEFT_BRACKET = '{';
-    private static final char RIGHT_BRACKET = '}';
     private static final String LEFT_BRACKET_STR = "{";
     private static final String RIGHT_BRACKET_STR = "}";
+    private static final char LEFT_BRACKET = LEFT_BRACKET_STR.charAt(0);
+    private static final char RIGHT_BRACKET = RIGHT_BRACKET_STR.charAt(0);
 
     private static final Pattern SPEL_PATTERN = Pattern.compile("^#([\\w$]+)?(\\..+)?$", Pattern.CASE_INSENSITIVE);
 
