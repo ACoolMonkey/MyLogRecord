@@ -4,6 +4,7 @@ import com.hys.mylogrecord.aop.annotation.MyLogRecord;
 import com.hys.mylogrecord.customfunction.MyLogRecordFunction;
 import com.hys.mylogrecord.customfunction.MyLogRecordSnapshotFunction;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
+import com.hys.mylogrecord.util.LogRecordConst;
 import com.hys.mylogrecord.util.LogUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -58,16 +59,16 @@ public class LogRecordInitializer implements InitializingBean {
     private void buildDynamicTemplate(String methodName, MyLogRecord annotation) {
         //relationId
         String relationId = annotation.relationId();
-        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordParseUtils.RELATION_ID, relationId);
+        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordConst.RELATION_ID, relationId);
         //operatorId
         String operatorId = annotation.operatorId();
-        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordParseUtils.OPERATOR_ID, operatorId);
+        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordConst.OPERATOR_ID, operatorId);
         //description
         String description = annotation.description();
-        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordParseUtils.DESCRIPTION, description);
+        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordConst.DESCRIPTION, description);
         //snapshot
         String snapshot = annotation.snapshot();
-        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordParseUtils.SNAPSHOT, snapshot);
+        LogRecordParseUtils.initDynamicTemplate(methodName, LogRecordConst.SNAPSHOT, snapshot);
     }
 
     private void initMyLogRecordSnapshotFunctions(Set<Class<? extends MyLogRecordSnapshotFunction>> classes) {
