@@ -1,6 +1,6 @@
 package com.hys.mylogrecord.customfunction;
 
-import com.hys.mylogrecord.util.LogRecordUtils;
+import com.hys.mylogrecord.util.LogRecordContext;
 
 /**
  * 日志记录保存快照
@@ -19,7 +19,7 @@ public interface MyLogRecordSnapshotFunction {
 
     /**
      * 自定义函数
-     * 注：本方法的返回值会被存进缓存中，通过{@link LogRecordUtils#getSnapshotCache()}方法拿到缓存值
+     * 注：本方法的返回值会被存进缓存中，通过{@link LogRecordContext#getSnapshotCache()}方法拿到缓存值
      */
     Object snapshotApply(Object value);
 }

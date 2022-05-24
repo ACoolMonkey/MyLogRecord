@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 日志记录工具类
+ * 日志记录上下文
  *
  * @author Robert Hou
  * @since 2022年04月24日 18:36
  **/
-public class LogRecordUtils {
+public class LogRecordContext {
 
     private static final ThreadLocal<List<Object>> SNAPSHOT_CACHE = ThreadLocal.withInitial(ArrayList::new);
 
-    private LogRecordUtils() {
+    private LogRecordContext() {
     }
 
     public static void addSnapshotCache(Object object) {

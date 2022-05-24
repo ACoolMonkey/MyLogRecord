@@ -8,7 +8,7 @@ import com.hys.mylogrecord.parse.dto.BracketsIndexStack;
 import com.hys.mylogrecord.parse.dto.DynamicTemplate;
 import com.hys.mylogrecord.parse.dto.DynamicTemplatesContext;
 import com.hys.mylogrecord.util.LogRecordConst;
-import com.hys.mylogrecord.util.LogRecordUtils;
+import com.hys.mylogrecord.util.LogRecordContext;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -263,7 +263,7 @@ public class LogRecordParseUtils {
         for (DynamicTemplate template : templates) {
             String innerTemplate = template.getTemplate();
             Object templateResult = getSnapshotTemplateResult(innerTemplate, paramNamesValues);
-            LogRecordUtils.addSnapshotCache(templateResult);
+            LogRecordContext.addSnapshotCache(templateResult);
         }
     }
 

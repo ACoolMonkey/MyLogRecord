@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.hys.mylogrecord.aop.annotation.MyLogRecord;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import com.hys.mylogrecord.persistence.LogRecordFactory;
-import com.hys.mylogrecord.util.LogRecordUtils;
+import com.hys.mylogrecord.util.LogRecordContext;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -58,7 +58,7 @@ public class LogRecordAspect {
             proceed = joinPoint.proceed();
         } catch (Throwable throwable) {
             LogRecordParseUtils.remove();
-            LogRecordUtils.remove();
+            LogRecordContext.remove();
             throw throwable;
         }
         ////////////////////////////////////////////////// 业务方法 end //////////////////////////////////////////////////
@@ -73,7 +73,7 @@ public class LogRecordAspect {
         }
         //清除ThreadLocal缓存
         LogRecordParseUtils.remove();
-        LogRecordUtils.remove();
+        LogRecordContext.remove();
 
         return proceed;
     }

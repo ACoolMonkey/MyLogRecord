@@ -2,7 +2,7 @@ package com.hys.mylogrecord.aop.annotation;
 
 import com.hys.mylogrecord.customfunction.MyLogRecordSnapshotFunction;
 import com.hys.mylogrecord.log.OperationLogTypeEnum;
-import com.hys.mylogrecord.util.LogRecordUtils;
+import com.hys.mylogrecord.util.LogRecordContext;
 
 import java.lang.annotation.*;
 
@@ -44,7 +44,7 @@ public @interface MyLogRecord {
     String description() default "";
 
     /**
-     * 保存快照，返回值会被存进缓存中。需要实现{@link MyLogRecordSnapshotFunction}接口，通过{@link LogRecordUtils#getSnapshotCache()}方法拿到缓存值
+     * 保存快照，返回值会被存进缓存中。需要实现{@link MyLogRecordSnapshotFunction}接口，通过{@link LogRecordContext#getSnapshotCache()}方法拿到缓存值
      * 注：本方法会比预处理的自定义函数还要先执行，同时也就意味着在自定义函数预执行阶段即可拿到缓存值
      */
     @SpelDynamicTemplate

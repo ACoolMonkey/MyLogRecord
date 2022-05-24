@@ -2,7 +2,7 @@ package com.hys.mylogrecord.demo.logrecord;
 
 import com.hys.mylogrecord.customfunction.MyLogRecordFunction;
 import com.hys.mylogrecord.demo.dto.ProductContentDTO;
-import com.hys.mylogrecord.util.LogRecordUtils;
+import com.hys.mylogrecord.util.LogRecordContext;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class UpdateProductDescLogRecordSnapshotFunction implements MyLogRecordFu
 
     @Override
     public String apply(Object value) {
-        List<Object> snapshots = LogRecordUtils.getSnapshotCache();
+        List<Object> snapshots = LogRecordContext.getSnapshotCache();
         if (CollectionUtils.isEmpty(snapshots)) {
             return null;
         }
