@@ -7,6 +7,7 @@ import com.hys.mylogrecord.parse.dto.DynamicTemplatesContext;
 import com.hys.mylogrecord.parse.util.LogRecordParseUtils;
 import com.hys.mylogrecord.persistence.service.LogRecordService;
 import com.hys.mylogrecord.util.LogRecordConst;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class LogRecordFactory {
         } else {
             relationIdResult = annotation.relationId();
         }
-        operationLogDTO.setRelationId(Long.valueOf(relationIdResult));
+        operationLogDTO.setRelationId(StringUtils.isBlank(relationIdResult) ? null : Long.valueOf(relationIdResult));
         //operatorId
         DynamicTemplatesContext operatorIdDT = LogRecordParseUtils.getDynamicTemplates(LogRecordConst.OPERATOR_ID);
         String operatorIdResult;
@@ -54,7 +55,7 @@ public class LogRecordFactory {
         } else {
             operatorIdResult = annotation.operatorId();
         }
-        operationLogDTO.setOperatorId(Long.valueOf(operatorIdResult));
+        operationLogDTO.setOperatorId(StringUtils.isBlank(operatorIdResult) ? null : Long.valueOf(operatorIdResult));
         //operateTime
         operationLogDTO.setOperateTime(new Date());
         //description
