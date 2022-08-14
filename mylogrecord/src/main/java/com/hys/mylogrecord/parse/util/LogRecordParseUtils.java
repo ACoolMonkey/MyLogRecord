@@ -197,7 +197,7 @@ public class LogRecordParseUtils {
     }
 
     public static void executeLogRecordFunctions(boolean executeBefore, Map<String, Object> paramNamesValues) {
-        if ((executeBefore && MapUtils.isEmpty(MY_EXECUTE_BEFORE_LOG_RECORD_FUNCTIONS))) {
+        if (executeBefore && MapUtils.isEmpty(MY_EXECUTE_BEFORE_LOG_RECORD_FUNCTIONS)) {
             return;
         }
 
