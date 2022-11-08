@@ -20,6 +20,8 @@ public class LogRecordConst {
 
     public static final String WELL_NUMBER = "#";
 
+    public static final String ENABLE_MY_LOG_RECORD_DEFAULT_SCAN_BASE_PACKAGES = "com.hys";
+
     private LogRecordConst() {
     }
 }

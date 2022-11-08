@@ -47,24 +47,24 @@ public class LogRecordAspect {
         MyLogRecord annotation = method.getAnnotation(MyLogRecord.class);
         //初始化缓存
         LogRecordParseUtils.initDynamicTemplatesTL(method.toGenericString());
-        //快照解析
-        LogRecordParseUtils.executeLogRecordSnapshotFunctions(paramNamesValues);
-        //自定义函数预执行
-        LogRecordParseUtils.executeLogRecordFunctions(true, paramNamesValues);
-
-        ////////////////////////////////////////////////// 业务方法 start //////////////////////////////////////////////////
         Object proceed;
         try {
+            //快照解析
+            LogRecordParseUtils.executeLogRecordSnapshotFunctions(paramNamesValues);
+            //自定义函数预执行
+            LogRecordParseUtils.executeLogRecordFunctions(true, paramNamesValues);
+
+            ////////////////////////////////////////////////// 业务方法 start //////////////////////////////////////////////////
             proceed = joinPoint.proceed();
+            ////////////////////////////////////////////////// 业务方法 end //////////////////////////////////////////////////
+
+            //自定义函数后执行 & SpEL解析
+            LogRecordParseUtils.executeLogRecordFunctions(false, paramNamesValues);
         } catch (Throwable throwable) {
             LogRecordParseUtils.remove();
             LogRecordContext.remove();
             throw throwable;
         }
-        ////////////////////////////////////////////////// 业务方法 end //////////////////////////////////////////////////
-
-        //自定义函数后执行 & SpEL解析
-        LogRecordParseUtils.executeLogRecordFunctions(false, paramNamesValues);
         //持久化
         try {
             logRecordFactory.record(annotation);

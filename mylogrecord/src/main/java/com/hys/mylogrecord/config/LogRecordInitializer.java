@@ -14,7 +14,6 @@ import org.reflections.util.ConfigurationBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -25,7 +24,6 @@ import java.util.Set;
  * @author Robert Hou
  * @since 2022年04月24日 17:12
  **/
-@Component
 @Slf4j
 public class LogRecordInitializer implements InitializingBean {
 
@@ -35,8 +33,12 @@ public class LogRecordInitializer implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         //动态模板初始化
+        String[] scanBasePackages = EnableMyLogRecordContext.getEnableMyLogRecordScanBasePackagesCache();
+        if (scanBasePackages == null || scanBasePackages.length == 0) {
+            scanBasePackages = new String[]{LogRecordConst.ENABLE_MY_LOG_RECORD_DEFAULT_SCAN_BASE_PACKAGES};
+        }
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .forPackages("com.hys")
+                .forPackages(scanBasePackages)
                 .addScanners(new MethodAnnotationsScanner()));
         Set<Method> methods = reflections.getMethodsAnnotatedWith(MyLogRecord.class);
         if (CollectionUtils.isNotEmpty(methods)) {
@@ -54,6 +56,8 @@ public class LogRecordInitializer implements InitializingBean {
         //自定义函数初始化
         Set<Class<? extends MyLogRecordFunction>> classes = reflections.getSubTypesOf(MyLogRecordFunction.class);
         initMyLogRecordFunctions(classes);
+
+        EnableMyLogRecordContext.remove();
     }
 
     private void buildDynamicTemplate(String methodName, MyLogRecord annotation) {
