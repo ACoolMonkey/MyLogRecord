@@ -81,7 +81,6 @@ public class LogRecordParseUtils {
         if (MapUtils.isEmpty(INIT_DYNAMIC_TEMPLATES)) {
             return;
         }
-
         Set<DynamicTemplatesContext> dynamicTemplateContexts = INIT_DYNAMIC_TEMPLATES.get(methodName);
         if (CollectionUtils.isEmpty(dynamicTemplateContexts)) {
             return;
