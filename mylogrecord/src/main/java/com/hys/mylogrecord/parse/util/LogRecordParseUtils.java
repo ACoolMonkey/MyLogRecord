@@ -16,10 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -85,6 +81,7 @@ public class LogRecordParseUtils {
         if (MapUtils.isEmpty(INIT_DYNAMIC_TEMPLATES)) {
             return;
         }
+
         Set<DynamicTemplatesContext> dynamicTemplateContexts = INIT_DYNAMIC_TEMPLATES.get(methodName);
         if (CollectionUtils.isEmpty(dynamicTemplateContexts)) {
             return;
@@ -93,32 +90,13 @@ public class LogRecordParseUtils {
         if (selected == null) {
             return;
         }
-        DynamicTemplatesContext dynamicTemplatesContextCopy = deepCopy(selected);
+        DynamicTemplatesContext dynamicTemplatesContextCopy = Convertor.INSTANCE.dynamicTemplatesContextDeepCopy(selected);
         Set<DynamicTemplatesContext> dynamicTemplatesContextTL = DYNAMIC_TEMPLATES.get();
         if (dynamicTemplatesContextTL == null) {
             dynamicTemplatesContextTL = Sets.newHashSetWithExpectedSize(1);
         }
         dynamicTemplatesContextTL.add(dynamicTemplatesContextCopy);
         DYNAMIC_TEMPLATES.set(dynamicTemplatesContextTL);
-    }
-
-    /**
-     * 深拷贝
-     */
-    private static <T> T deepCopy(T src) {
-        try {
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(byteOut);
-            out.writeObject(src);
-
-            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-            ObjectInputStream in = new ObjectInputStream(byteIn);
-            @SuppressWarnings("unchecked")
-            T dest = (T) in.readObject();
-            return dest;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static void initDynamicTemplate(String methodName, String annotation, String content) {

@@ -61,8 +61,8 @@ public class LogRecordAspect {
             //自定义函数后执行 & SpEL解析
             LogRecordParseUtils.executeLogRecordFunctions(false, paramNamesValues);
         } catch (Throwable throwable) {
-            LogRecordParseUtils.remove();
-            LogRecordContext.remove();
+            //清除ThreadLocal缓存
+            removeCache();
             throw throwable;
         }
         //持久化
@@ -72,10 +72,14 @@ public class LogRecordAspect {
             log.error("日志持久化出错！", e);
         }
         //清除ThreadLocal缓存
-        LogRecordParseUtils.remove();
-        LogRecordContext.remove();
+        removeCache();
 
         return proceed;
+    }
+
+    private void removeCache() {
+        LogRecordParseUtils.remove();
+        LogRecordContext.remove();
     }
 
     private Map<String, Object> paramNamesValues(String[] paramNames, Object[] paramValues) {
